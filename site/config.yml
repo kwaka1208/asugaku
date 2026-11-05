@@ -2,9 +2,9 @@
 # このファイルと site/ 以下は、グループごとに自由に編集してください。
 
 group:
-  name: CoderDojo 奈良
-  description: 子どものためのプログラミング道場です。
-  contact_email: info@example.org   # サイトとメールに表示する問い合わせ先
+  name: あすか雑楽部
+  description: あすか雑楽部は、AIとか、セキュリティといった生活に身近なIT系のテーマを中心に、時にはチェスやカードゲームのようなことも取り入れて、雑多なことを楽しく学ぶ会です。
+  contact_email: hello@crssrds.jp   # サイトとメールに表示する問い合わせ先
 
 theme:
   accent: "#0F6E8C"                 # アクセントカラー（白い文字が読める濃さが必要です）
@@ -18,16 +18,16 @@ site:
 timezone: Asia/Tokyo
 
 admins:                             # 管理ページを閲覧できる Google アカウント
-  - organizer@example.org
+  - kenichi@crssrds.jp
 
 firebase:                           # Firebase の Web 設定（公開してよい値）
-  apiKey: "your-api-key"
-  authDomain: "your-project.firebaseapp.com"
-  projectId: "your-project"
-  appId: "your-app-id"
+  apiKey: "AIzaSyA7FjAAVWCQwUAxTxlXnvExk3uwUKtUWFg"
+  authDomain: "asugaku.firebaseapp.com"
+  projectId: "asugaku"
+  appId: "1:980394628839:web:1d1a55cf085737ecd4b442"
 
 mail:
-  from_name: CoderDojo 奈良
+  from_name: あすか雑楽部
   smtp_host: smtp.gmail.com
   smtp_port: 465
   confirmation: true                # 申込受付メールを送るか
