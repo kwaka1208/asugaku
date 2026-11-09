@@ -44,7 +44,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 16px; /* 本文の標準 */
   line-height: 1.75;
 }
 
@@ -129,7 +129,7 @@ a:hover {
   max-width: 14em;
 }
 
-.site-header .admin-nav {
+.site-header .site-nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 20px;
@@ -137,15 +137,15 @@ a:hover {
   padding-bottom: 10px;
   font-size: 14px;
 }
-.admin-nav a {
+.site-nav a {
   color: var(--text-sub);
   text-decoration: none;
 }
-.admin-nav a:hover,
-.admin-nav a.active {
+.site-nav a:hover,
+.site-nav a.active {
   color: var(--accent);
 }
-.admin-nav a.active {
+.site-nav a.active {
   font-weight: 700;
 }
 
@@ -407,4 +407,222 @@ a:hover {
 }
 .pre-wrap {
   white-space: pre-wrap;
+}
+
+/* ---------------------------------------------------------------- イベント */
+
+.card-link {
+  color: inherit;
+  text-decoration: none;
+}
+.card-link:hover {
+  border-color: var(--accent);
+  color: inherit;
+}
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-draft {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+}
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.checkbox input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  flex: 0 0 auto;
+}
+.input-short {
+  max-width: 10em;
+}
+ul.error {
+  margin: 0;
+  padding-left: 28px;
+}
+.badge-done {
+  background: color-mix(in srgb, var(--success) 14%, #fff);
+  color: var(--success);
+}
+.badge-few {
+  background: var(--few-bg);
+  color: var(--few-text);
+}
+.list-heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+.stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.back {
+  margin: 0;
+  font-size: 14px;
+}
+.address {
+  display: block;
+  color: var(--text-sub);
+  font-size: 14px;
+}
+.done {
+  color: var(--success);
+  font-weight: 700;
+}
+.registrants {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+/* 本文（Markdown） */
+.markdown {
+  overflow-wrap: anywhere;
+}
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  margin: 1.6em 0 0.6em;
+  font-family: var(--font-heading);
+  line-height: 1.4;
+}
+.markdown h1 {
+  font-size: 22px;
+}
+.markdown h2 {
+  font-size: 20px;
+}
+.markdown h3 {
+  font-size: 17px;
+}
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote,
+.markdown pre,
+.markdown table {
+  margin: 0 0 1em;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.5em;
+}
+.markdown blockquote {
+  padding-left: 12px;
+  border-left: 4px solid var(--border);
+  color: var(--text-sub);
+}
+.markdown code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--disabled-bg);
+  font-size: 0.9em;
+}
+.markdown pre {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--disabled-bg);
+  overflow-x: auto;
+}
+.markdown pre code {
+  padding: 0;
+  background: none;
+}
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+.markdown table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.markdown th,
+.markdown td {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+}
+.badge-self {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.notice {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--success) 12%, #fff);
+  color: var(--success);
+  font-size: 14px;
+}
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  gap: 10px;
+}
+.fieldset legend {
+  margin-bottom: 6px;
+  padding: 0;
+}
+.pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.pick-actions {
+  display: flex;
+  gap: 8px;
+}
+.notes {
+  margin: 0;
+  padding-left: 20px;
+}
+.confirm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--accent-light);
+}
+details summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 14px;
+}
+details[open] summary {
+  margin-bottom: 10px;
+}
+.mail-body {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg);
 }
