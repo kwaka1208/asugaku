@@ -132,10 +132,42 @@ a:hover {
 .site-header .site-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 20px;
+  align-items: center;
+  gap: 0 16px;
   min-height: 0;
-  padding-bottom: 10px;
+  padding-bottom: 2px;
   font-size: 14px;
+}
+/* 押せる範囲を 44px の高さにする（文字の大きさは変えない） */
+.site-nav:not(.drawer) a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+/* メニューのまとまり。広い画面では、1 行目がメンバーのメニュー、2 行目が管理者のメニュー */
+.site-header .site-nav:not(.drawer) {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+.nav-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 16px;
+}
+.site-nav:not(.drawer) .nav-admin {
+  border-top: 1px solid var(--divider);
+}
+.nav-label {
+  color: var(--text-sub);
+  font-size: 12px;
+  font-weight: 700;
+}
+.site-nav:not(.drawer) .nav-label {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--bg);
 }
 .site-nav a {
   color: var(--text-sub);
@@ -147,6 +179,122 @@ a:hover {
 }
 .site-nav a.active {
   font-weight: 700;
+}
+
+/* スマホの幅（640px 未満。Layout.tsx の DRAWER_QUERY と合わせる）では、メニューを右から開くドロワーにする */
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.menu-icon,
+.menu-icon::before,
+.menu-icon::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.menu-icon {
+  position: relative;
+}
+.menu-icon::before,
+.menu-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+.menu-icon::before {
+  top: -6px;
+}
+.menu-icon::after {
+  top: 6px;
+}
+.site-header .site-nav.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  width: min(300px, 85vw);
+  max-width: none;
+  margin: 0;
+  padding: 0 0 24px;
+  overflow-y: auto;
+  background: var(--card);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 0.12);
+  font-size: 16px;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+.site-header .site-nav.drawer.is-open {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.25s ease;
+}
+.site-nav.drawer a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 20px;
+}
+.site-nav.drawer a.active {
+  background: var(--accent-light);
+}
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 60px;
+  margin-bottom: 8px;
+  padding: 0 12px 0 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.site-nav.drawer .nav-group {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+}
+.site-nav.drawer .nav-label {
+  margin: 12px 20px 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--divider);
+}
+.drawer-logout {
+  align-self: flex-start;
+  margin: 16px 12px 0;
+}
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgb(0 0 0 / 0.35);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header .site-nav.drawer,
+  .site-header .site-nav.drawer.is-open {
+    transition: none;
+  }
 }
 
 .main {
@@ -502,6 +650,11 @@ ul.error {
   margin: 0;
   font-size: 14px;
 }
+.back a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .address {
   display: block;
   color: var(--text-sub);
@@ -839,15 +992,22 @@ details[open] summary {
   list-style: none;
 }
 .directory > li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid var(--divider);
 }
 .directory > li:last-child {
   border-bottom: none;
+}
+.directory-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  min-width: 0;
 }
 .directory-name {
   font-weight: 700;
@@ -860,4 +1020,197 @@ details[open] summary {
   max-width: 100%;
   overflow-wrap: anywhere;
   font-size: 14px;
+}
+
+/* ---------------------------------------------------------------- メンバー管理の一覧 */
+/* ひとり一行。行を押すと、その人の詳細を開く */
+.member-rows {
+  gap: 0;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+}
+.member-rows > li + li {
+  border-top: 1px solid var(--divider);
+}
+.member-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  min-height: 52px;
+  padding: 10px 40px 10px 20px;
+  position: relative;
+  color: var(--text);
+  text-decoration: none;
+}
+.member-row:hover {
+  background: var(--accent-light);
+  color: var(--text);
+}
+.member-row-name {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.member-row-name .card-subtitle {
+  font-weight: 400;
+}
+.member-row-role {
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.member-row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.member-row-arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  color: var(--text-sub);
+  font-size: 20px;
+}
+
+/* ---------------------------------------------------------------- 配色の設定 */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.swatch:hover {
+  background: var(--bg);
+}
+.swatch[aria-checked='true'] {
+  border-color: var(--swatch);
+  box-shadow: 0 0 0 1px var(--swatch);
+  font-weight: 700;
+}
+.swatch-chip {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+.swatch[aria-checked='true'] .swatch-chip {
+  box-shadow:
+    0 0 0 2px var(--card),
+    0 0 0 4px var(--swatch);
+}
+.color-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.color-input input[type='color'] {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background: var(--card);
+  cursor: pointer;
+}
+.color-input .input {
+  max-width: 10em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+/* 見本は、選んでいる色をこの中だけで当てる（保存するまで、ほかの画面は変えない） */
+.accent-preview {
+  --accent-light: color-mix(in srgb, var(--accent) 12%, #fff);
+  --accent-hover: color-mix(in srgb, var(--accent) 80%, #000);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+.accent-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.accent-preview .button-primary {
+  min-height: 44px;
+  padding: 0 24px;
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------- プロフィール画像 */
+.avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+}
+img.avatar {
+  background: var(--divider);
+}
+.photo-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.photo-field .actions {
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------- 操作の見え方 */
+/* 取り消せない操作（削除・退会）の最初のボタンは、赤い文字で見分けられるようにする。確認の画面は別にある */
+.button-secondary.is-destructive,
+.button-text.is-destructive {
+  color: var(--danger);
+}
+.button-secondary.is-destructive:hover:not(:disabled) {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+/* 広い画面では、ボタンを文字に合わせた幅にして、横に並べる（全幅の帯にしない）。
+   スマホの幅では、押しやすいように画面の幅いっぱいのまま */
+@media (min-width: 640px) {
+  .main .button-primary,
+  .main .button-secondary,
+  .main .button-danger {
+    align-self: flex-start;
+    min-width: 160px;
+    min-height: 48px;
+    padding: 0 28px;
+  }
+  .main .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .main .actions > .button-text {
+    align-self: center;
+  }
 }
