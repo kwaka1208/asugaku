@@ -8,7 +8,11 @@ import { RequireMember } from '@/components/RequireMember';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { TopPage } from '@/pages/TopPage';
 import { SessionProvider } from '@/session/SessionProvider';
+import { applyCachedAccent } from '@/lib/theme';
 import '@/styles.css';
+
+// 前に開いたときのテーマカラーを、最初の表示の前に当てる（標準の色が一瞬見えないように）
+applyCachedAccent();
 
 // トップページとページが見つからない画面のほかは、開いたときに読み込む（最初の読み込みを軽くするため）
 const page = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) =>
@@ -18,6 +22,7 @@ const ApplicationsPage = page(() => import('@/pages/admin/ApplicationsPage'), 'A
 const InquiriesPage = page(() => import('@/pages/admin/InquiriesPage'), 'InquiriesPage');
 const MailComposePage = page(() => import('@/pages/admin/MailComposePage'), 'MailComposePage');
 const MailsPage = page(() => import('@/pages/admin/MailsPage'), 'MailsPage');
+const MemberDetailPage = page(() => import('@/pages/admin/MemberDetailPage'), 'MemberDetailPage');
 const MembersPage = page(() => import('@/pages/admin/MembersPage'), 'MembersPage');
 const SettingsPage = page(() => import('@/pages/admin/SettingsPage'), 'SettingsPage');
 const BoardPage = page(() => import('@/pages/BoardPage'), 'BoardPage');
@@ -70,6 +75,7 @@ const router = createBrowserRouter(
             { path: '/admin/events/new', element: <EventNewPage /> },
             { path: '/admin/events/:id', element: <EventEditPage /> },
             { path: '/admin/members', element: <MembersPage /> },
+            { path: '/admin/members/:uid', element: <MemberDetailPage /> },
             { path: '/admin/mails', element: <MailsPage /> },
             { path: '/admin/mails/new', element: <MailComposePage /> },
             { path: '/admin/inquiries', element: <InquiriesPage /> },
